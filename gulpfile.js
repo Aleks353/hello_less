@@ -4,6 +4,18 @@ var replace = require('gulp-html-replace');
 var includer = require('gulp-htmlincluder');
 var livereload = require('gulp-livereload');
 var less = require('gulp-less');
+var rename = require('gulp-rename');
+var clean = require('gulp-clean');
+
+gulp.task('clean', function(){
+	gulp.src('build', {read: false})
+	.pipe(clean());
+});
+
+gulp.task('copyCss', function(){
+	gulp.src('dev/css/**/*.css')
+	.pipe(gulp.dest('build/css'));
+})
 
 gulp.task('server', function(){
 	connect.server({
@@ -14,6 +26,7 @@ gulp.task('server', function(){
 gulp.task('css', function(){
 	gulp.src('dev/less/general.less')
 		.pipe(less())
+		.pipe(rename('style.css'))
 		.pipe(gulp.dest('build/css/'))
 		.pipe(connect.reload());
 });
@@ -29,7 +42,7 @@ gulp.task('html', function(){
 });
 
 gulp.task('default', function(){
-	gulp.start('css', 'html', 'server');
+	gulp.start('copyCss', 'css', 'html', 'server');
 
 	gulp.watch(['dev/less/**/*.less'], function(){
 		gulp.start('css');
