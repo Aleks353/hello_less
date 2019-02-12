@@ -1,6 +1,7 @@
 *.zip
 *.rar
 *.7z
+*.cmd
 node_modules/
 build/
 .DS_Store
